@@ -9,6 +9,8 @@ export interface IUserDocument extends Document {
   plan: 'free' | 'pro' | 'team';
   accessToken: string;
   refreshToken?: string;
+  digestEnabled: boolean;
+  digestDay: string;
   createdAt: Date;
   updatedAt: Date;
   toSafeJSON(): Record<string, unknown>;
@@ -24,9 +26,18 @@ const userSchema = new Schema<IUserDocument>(
     plan: { type: String, enum: ['free', 'pro', 'team'], default: 'free' },
     accessToken: { type: String, required: true },
     refreshToken: { type: String },
+    digestEnabled: { type: Boolean, default: true },
+    digestDay: { type: String, enum: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'], default: 'monday' },
   },
   {
     timestamps: true,
+    toJSON: {
+      virtuals: true,
+      transform(_doc, ret) {
+        ret.id = ret._id?.toString();
+        delete ret.__v;
+      },
+    },
   },
 );
 

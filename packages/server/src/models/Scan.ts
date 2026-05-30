@@ -76,6 +76,13 @@ const scanSchema = new Schema<IScanDocument>(
   },
   {
     timestamps: { createdAt: true, updatedAt: false },
+    toJSON: {
+      virtuals: true,
+      transform(_doc, ret) {
+        ret.id = ret._id?.toString();
+        delete ret.__v;
+      },
+    },
   },
 );
 

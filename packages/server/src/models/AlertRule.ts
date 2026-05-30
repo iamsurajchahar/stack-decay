@@ -28,6 +28,13 @@ const alertRuleSchema = new Schema<IAlertRuleDocument>(
   },
   {
     timestamps: true,
+    toJSON: {
+      virtuals: true,
+      transform(_doc, ret) {
+        ret.id = ret._id?.toString();
+        delete ret.__v;
+      },
+    },
   },
 );
 
