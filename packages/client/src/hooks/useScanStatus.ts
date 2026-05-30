@@ -1,7 +1,6 @@
-import { useEffect, useState, useCallback, useRef } from 'react';
-import { io, Socket } from 'socket.io-client';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { triggerScan } from '../api/scans';
+import { triggerScan, getScan } from '../api/scans';
 
 interface ScanProgress {
   status: 'idle' | 'pending' | 'scanning' | 'enriching' | 'scoring' | 'completed' | 'failed';
@@ -9,69 +8,94 @@ interface ScanProgress {
   error: string | null;
 }
 
+const STATUS_PROGRESS: Record<string, number> = {
+  pending: 10,
+  scanning: 30,
+  enriching: 55,
+  scoring: 80,
+  completed: 100,
+  failed: 0,
+};
+
 export function useScanStatus(repoId: string) {
   const [state, setState] = useState<ScanProgress>({
     status: 'idle',
     progress: 0,
     error: null,
   });
-  const socketRef = useRef<Socket | null>(null);
   const qc = useQueryClient();
+  const pollingRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const scanIdRef = useRef<string | null>(null);
 
+  // Cleanup on unmount
   useEffect(() => {
-    if (!repoId) return;
-
-    const socket = io(window.location.origin, {
-      path: '/api/ws',
-      transports: ['websocket', 'polling'],
-    });
-    socketRef.current = socket;
-
-    socket.on('connect', () => {
-      socket.emit('subscribe:scan', repoId);
-    });
-
-    socket.on('scan:progress', (data: { repoId: string; status: string; progress: number }) => {
-      if (data.repoId === repoId) {
-        setState({
-          status: data.status as ScanProgress['status'],
-          progress: data.progress,
-          error: null,
-        });
-      }
-    });
-
-    socket.on('scan:completed', (data: { repoId: string }) => {
-      if (data.repoId === repoId) {
-        setState({ status: 'completed', progress: 100, error: null });
-        qc.invalidateQueries({ queryKey: ['repos', repoId] });
-        qc.invalidateQueries({ queryKey: ['scores', repoId] });
-      }
-    });
-
-    socket.on('scan:failed', (data: { repoId: string; error: string }) => {
-      if (data.repoId === repoId) {
-        setState({ status: 'failed', progress: 0, error: data.error });
-      }
-    });
-
     return () => {
-      socket.disconnect();
-      socketRef.current = null;
+      if (pollingRef.current) clearInterval(pollingRef.current);
     };
+  }, []);
+
+  const startPolling = useCallback((scanId: string) => {
+    scanIdRef.current = scanId;
+
+    // Poll the real scan status from the server
+    pollingRef.current = setInterval(async () => {
+      try {
+        const scan = await getScan(repoId, scanId);
+        if (!scan) return;
+
+        const scanStatus = scan.status as ScanProgress['status'];
+        const progress = STATUS_PROGRESS[scanStatus] ?? 0;
+
+        setState({ status: scanStatus, progress, error: null });
+
+        if (scanStatus === 'completed') {
+          if (pollingRef.current) clearInterval(pollingRef.current);
+
+          // Refresh all related data
+          qc.invalidateQueries({ queryKey: ['repos'] });
+          qc.invalidateQueries({ queryKey: ['repos', repoId] });
+          qc.invalidateQueries({ queryKey: ['scores', repoId] });
+          qc.invalidateQueries({ queryKey: ['recommendations', repoId] });
+          qc.invalidateQueries({ queryKey: ['dashboard'] });
+
+          // Reset to idle after a moment
+          setTimeout(() => {
+            setState({ status: 'idle', progress: 0, error: null });
+          }, 3000);
+        } else if (scanStatus === 'failed') {
+          if (pollingRef.current) clearInterval(pollingRef.current);
+          setState({
+            status: 'failed',
+            progress: 0,
+            error: scan.errorMessage || 'Scan failed',
+          });
+        }
+      } catch {
+        // Silently continue polling on transient errors
+      }
+    }, 3000);
   }, [repoId, qc]);
 
   const startScan = useMutation({
     mutationFn: () => triggerScan(repoId),
     onMutate: () => {
-      setState({ status: 'pending', progress: 0, error: null });
+      setState({ status: 'pending', progress: 10, error: null });
     },
-    onError: (err: Error) => {
-      setState({ status: 'failed', progress: 0, error: err.message });
+    onSuccess: (scan: any) => {
+      const id = scan?.id || scan?._id || '';
+      startPolling(id);
+    },
+    onError: (err: any) => {
+      setState({
+        status: 'failed',
+        progress: 0,
+        error: err?.response?.data?.message || err.message || 'Scan failed',
+      });
     },
   });
 
   const reset = useCallback(() => {
+    if (pollingRef.current) clearInterval(pollingRef.current);
     setState({ status: 'idle', progress: 0, error: null });
   }, []);
 

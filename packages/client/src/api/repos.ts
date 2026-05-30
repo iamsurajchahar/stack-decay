@@ -1,7 +1,7 @@
 import apiClient from './client';
 import type { IRepository } from '@stack-decay/shared';
 
-interface AvailableRepo {
+export interface AvailableRepo {
   githubRepoId: number;
   fullName: string;
   owner: string;
@@ -13,7 +13,7 @@ interface AvailableRepo {
   updatedAt: string;
 }
 
-interface ConnectRepoData {
+export interface ConnectRepoData {
   githubRepoId: number;
   fullName: string;
   owner: string;
@@ -26,27 +26,27 @@ interface ConnectRepoData {
 
 export async function listRepos(): Promise<IRepository[]> {
   const { data } = await apiClient.get('/repos');
-  return data;
+  return data.repos ?? data;
 }
 
 export async function listAvailable(): Promise<AvailableRepo[]> {
   const { data } = await apiClient.get('/repos/available');
-  return data;
+  return data.repos ?? data;
 }
 
 export async function connectRepo(payload: ConnectRepoData): Promise<IRepository> {
   const { data } = await apiClient.post('/repos', payload);
-  return data;
+  return data.repo ?? data;
 }
 
 export async function getRepo(id: string): Promise<IRepository> {
   const { data } = await apiClient.get(`/repos/${id}`);
-  return data;
+  return data.repo ?? data;
 }
 
 export async function updateRepo(id: string, payload: Partial<IRepository>): Promise<IRepository> {
   const { data } = await apiClient.patch(`/repos/${id}`, payload);
-  return data;
+  return data.repo ?? data;
 }
 
 export async function deleteRepo(id: string): Promise<void> {

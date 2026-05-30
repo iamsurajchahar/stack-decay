@@ -13,7 +13,7 @@ export async function handleCallback(code: string): Promise<{ token: string; use
 
 export async function getMe(): Promise<IUser> {
   const { data } = await apiClient.get('/auth/me');
-  return data;
+  return data.user ?? data;
 }
 
 export async function refreshToken(): Promise<{ token: string }> {

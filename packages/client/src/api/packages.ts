@@ -3,7 +3,7 @@ import type { IPackage, IHealthSnapshot, IVulnerability } from '@stack-decay/sha
 
 export async function getPackage(ecosystem: string, name: string): Promise<IPackage> {
   const { data } = await apiClient.get(`/packages/${ecosystem}/${encodeURIComponent(name)}`);
-  return data;
+  return data.package ?? data;
 }
 
 export async function getHealthHistory(
@@ -11,7 +11,7 @@ export async function getHealthHistory(
   name: string,
 ): Promise<IHealthSnapshot[]> {
   const { data } = await apiClient.get(`/packages/${ecosystem}/${encodeURIComponent(name)}/health`);
-  return data;
+  return data.history ?? data;
 }
 
 export async function getVulnerabilities(
@@ -19,5 +19,5 @@ export async function getVulnerabilities(
   name: string,
 ): Promise<IVulnerability[]> {
   const { data } = await apiClient.get(`/packages/${ecosystem}/${encodeURIComponent(name)}/vulnerabilities`);
-  return data;
+  return data.vulnerabilities ?? data;
 }

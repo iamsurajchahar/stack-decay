@@ -2,6 +2,11 @@ import apiClient from './client';
 import type { IRecommendation } from '@stack-decay/shared';
 
 export async function getRecommendations(repoId: string): Promise<IRecommendation[]> {
-  const { data } = await apiClient.get(`/repos/${repoId}/recommendations`);
-  return data;
+  try {
+    const { data } = await apiClient.get(`/repos/${repoId}/recommendations`);
+    return data.recommendations ?? data;
+  } catch (err: any) {
+    if (err?.response?.status === 404) return [];
+    throw err;
+  }
 }

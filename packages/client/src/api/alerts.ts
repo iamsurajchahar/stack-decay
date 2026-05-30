@@ -10,17 +10,17 @@ interface AlertHistoryParams {
 
 export async function listRules(): Promise<IAlertRule[]> {
   const { data } = await apiClient.get('/alerts/rules');
-  return data;
+  return data.rules ?? data;
 }
 
 export async function createRule(payload: Omit<IAlertRule, 'id' | 'userId' | 'createdAt' | 'updatedAt'>): Promise<IAlertRule> {
   const { data } = await apiClient.post('/alerts/rules', payload);
-  return data;
+  return data.rule ?? data;
 }
 
 export async function updateRule(id: string, payload: Partial<IAlertRule>): Promise<IAlertRule> {
   const { data } = await apiClient.patch(`/alerts/rules/${id}`, payload);
-  return data;
+  return data.rule ?? data;
 }
 
 export async function deleteRule(id: string): Promise<void> {
@@ -29,5 +29,5 @@ export async function deleteRule(id: string): Promise<void> {
 
 export async function getAlertHistory(params?: AlertHistoryParams): Promise<{ items: INotification[]; total: number }> {
   const { data } = await apiClient.get('/alerts/history', { params });
-  return data;
+  return { items: data.notifications ?? [], total: data.pagination?.total ?? 0 };
 }

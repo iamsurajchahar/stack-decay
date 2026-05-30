@@ -27,6 +27,6 @@ export interface FilterState {
 
 export type SortOption = 'score' | 'name' | 'lastScanned';
 
-export type TabId = 'overview' | 'dependencies' | 'vulnerabilities' | 'recommendations';
+export type TabId = 'overview' | 'dependencies' | 'vulnerabilities' | 'recommendations' | 'licenses' | 'tree';
 
 export type DepTabId = 'maintenance' | 'community' | 'vulnerabilities' | 'alternatives';
