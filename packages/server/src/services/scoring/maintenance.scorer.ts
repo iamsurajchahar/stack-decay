@@ -52,7 +52,8 @@ export function scoreMaintenance(health: IHealthSnapshot): number {
   const openIssues = m?.openIssuesCount;
   const closedIssues = m?.closedIssuesLast90d;
   let issueHealth: number;
-  if (openIssues == null && closedIssues == null) {
+  if ((openIssues == null || openIssues === 0) && (closedIssues == null || closedIssues === 0)) {
+    // No issue data available (not enriched from GitHub) — use neutral default
     issueHealth = NEUTRAL_DEFAULT;
   } else {
     const open = openIssues ?? 0;
@@ -72,7 +73,8 @@ export function scoreMaintenance(health: IHealthSnapshot): number {
   // 4. Responsiveness: average days to close issues
   const avgCloseDays = m?.avgIssueCloseDays;
   let responsiveness: number;
-  if (avgCloseDays == null) {
+  if (avgCloseDays == null || avgCloseDays === 0) {
+    // No data available — use neutral default
     responsiveness = NEUTRAL_DEFAULT;
   } else if (avgCloseDays < 7) {
     responsiveness = 100;

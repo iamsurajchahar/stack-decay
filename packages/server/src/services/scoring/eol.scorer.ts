@@ -49,14 +49,17 @@ export function scoreEol(health: IHealthSnapshot): number {
   // If no EOL date info at all, assume fine (100)
 
   // Apply "effectively abandoned" penalty
-  // No release in 2+ years AND low commit activity AND not archived
+  // No release in 2+ years AND confirmed low commit activity AND not archived
+  // Only apply if we have real commit data (commitsLast90d > 0 means we fetched from GitHub)
   const daysSinceRelease = maintenance?.daysSinceLastRelease;
   const commitsLast90d = maintenance?.commitsLast90d;
 
   if (daysSinceRelease != null && daysSinceRelease > 730) {
-    // 2+ years without a release
-    const lowCommits = commitsLast90d == null || commitsLast90d < 5;
-    if (lowCommits) {
+    // 2+ years without a release — only penalize if we have confirmed low commits
+    // commitsLast90d === 0 could mean "no data fetched" so require explicit confirmation
+    const hasCommitData = commitsLast90d != null && commitsLast90d > 0;
+    const confirmedLowCommits = hasCommitData && commitsLast90d < 5;
+    if (confirmedLowCommits) {
       baseScore = Math.round(baseScore * 0.3);
     }
   }

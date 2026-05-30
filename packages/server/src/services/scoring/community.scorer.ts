@@ -6,10 +6,11 @@ const NEUTRAL_DEFAULT = 50;
  * Score the community health of a package using log-scaled metrics.
  *
  * Sub-scores (0-100 each, log-scaled):
- * 1. Popularity (25%): based on stars count
- * 2. Growth (25%): based on stars growth in last 30 days
- * 3. Contributors (25%): based on contributor count
- * 4. Adoption (25%): based on dependent repos count
+ * 1. Popularity (20%): based on stars count
+ * 2. Growth (15%): based on stars growth in last 30 days
+ * 3. Contributors (15%): based on contributor count
+ * 4. Adoption (20%): based on dependent repos count
+ * 5. Downloads (30%): based on weekly download count — most reliably available metric
  */
 export function scoreCommunity(health: IHealthSnapshot): number {
   const c = health.community;
@@ -17,7 +18,7 @@ export function scoreCommunity(health: IHealthSnapshot): number {
   // 1. Popularity: log-scaled stars
   const stars = c?.starsCount;
   let popularity: number;
-  if (stars == null) {
+  if (stars == null || stars === 0) {
     popularity = NEUTRAL_DEFAULT;
   } else {
     popularity = Math.min(100, (Math.log10(stars + 1) / Math.log10(100000)) * 100);
@@ -27,7 +28,7 @@ export function scoreCommunity(health: IHealthSnapshot): number {
   const starsGrowth = c?.starsGrowth30d;
   const starsCount = c?.starsCount;
   let growth: number;
-  if (starsGrowth == null || starsCount == null) {
+  if (starsGrowth == null || starsCount == null || starsCount === 0) {
     growth = NEUTRAL_DEFAULT;
   } else {
     const base = Math.max(starsCount, 1);
@@ -37,7 +38,7 @@ export function scoreCommunity(health: IHealthSnapshot): number {
   // 3. Contributors: log-scaled
   const contributors = c?.contributorCount;
   let contributorScore: number;
-  if (contributors == null) {
+  if (contributors == null || contributors === 0) {
     contributorScore = NEUTRAL_DEFAULT;
   } else {
     contributorScore = Math.min(
@@ -49,7 +50,7 @@ export function scoreCommunity(health: IHealthSnapshot): number {
   // 4. Adoption: log-scaled dependent repos
   const dependentRepos = c?.dependentReposCount;
   let adoption: number;
-  if (dependentRepos == null) {
+  if (dependentRepos == null || dependentRepos === 0) {
     adoption = NEUTRAL_DEFAULT;
   } else {
     adoption = Math.min(
@@ -58,8 +59,23 @@ export function scoreCommunity(health: IHealthSnapshot): number {
     );
   }
 
-  // Equal weights
-  const score = popularity * 0.25 + growth * 0.25 + contributorScore * 0.25 + adoption * 0.25;
+  // 5. Downloads: log-scaled weekly downloads (most reliable metric from npm)
+  const downloads = c?.downloadsLastWeek;
+  let downloadScore: number;
+  if (downloads == null || downloads === 0) {
+    downloadScore = NEUTRAL_DEFAULT;
+  } else {
+    // Scale: 1k=40, 10k=53, 100k=67, 1M=80, 10M=93, 100M+=100
+    downloadScore = Math.min(100, (Math.log10(downloads + 1) / Math.log10(150_000_000)) * 100);
+  }
+
+  // Weighted: downloads get 30% since it's the most reliably available metric
+  const score =
+    popularity * 0.20 +
+    growth * 0.15 +
+    contributorScore * 0.15 +
+    adoption * 0.20 +
+    downloadScore * 0.30;
 
   return Math.round(Math.max(0, Math.min(100, score)));
 }

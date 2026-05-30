@@ -38,7 +38,7 @@ export function scoreDependency(
   const grade = getGrade(clampedScore);
 
   return {
-    id: '', // Will be assigned by MongoDB
+    id: '',
     scanId,
     packageId,
     maintenanceScore,
@@ -126,12 +126,39 @@ export function scoreRepository(
   const licenseAvg = Math.round(weightedLicense / divisor);
 
   // Apply concentration risk penalties
+
+  // Penalty for any critically low-scoring deps
   if (veryLowScoreCount > 0) {
     compositeAvg -= 5;
   }
+
+  // Penalty if many deps have low composite scores
   const lowScorePercentage = lowScoreCount / dependencyScores.length;
   if (lowScorePercentage > 0.2) {
     compositeAvg -= 10;
+  }
+
+  // Vulnerability-specific penalties — a repo with many vulnerable deps should not score A
+  // Penalty scales with the percentage and severity of vulnerable dependencies
+  if (vulnerableCount > 0) {
+    const vulnPercentage = vulnerableCount / dependencyScores.length;
+
+    // Count deps with zero vulnerability score (critical vuln load)
+    const zeroVulnScoreCount = dependencyScores.filter(d => d.vulnerabilityScore === 0).length;
+
+    // Base penalty: -3 per vulnerable dep (capped at -30)
+    const perDepPenalty = Math.min(30, vulnerableCount * 3);
+    compositeAvg -= perDepPenalty;
+
+    // Extra penalty for high vulnerability concentration (>25% of deps vulnerable)
+    if (vulnPercentage > 0.25) {
+      compositeAvg -= 10;
+    }
+
+    // Extra penalty for any dep with vulnerability score of 0 (severe vuln load)
+    if (zeroVulnScoreCount > 0) {
+      compositeAvg -= Math.min(15, zeroVulnScoreCount * 5);
+    }
   }
 
   compositeAvg = Math.round(Math.max(0, Math.min(100, compositeAvg)));
