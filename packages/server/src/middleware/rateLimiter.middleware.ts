@@ -1,22 +1,29 @@
-import rateLimit from 'express-rate-limit';
-import RedisStore from 'rate-limit-redis';
-import { redisClient } from '../config/redis';
+import rateLimit, { type Store } from 'express-rate-limit';
+import { config } from '../config/index';
 
-function createStore(prefix: string) {
-  return new RedisStore({
-    // Use ioredis `call` method compatible with rate-limit-redis
-    sendCommand: (...args: string[]) =>
-      redisClient.call(args[0], ...args.slice(1)) as Promise<unknown>,
-    prefix: `rl:${prefix}:`,
-  });
+const isDev = process.env.NODE_ENV !== 'production';
+
+function createStore(prefix: string): Store | undefined {
+  if (!config.REDIS_HOST) {
+    return undefined; // Falls back to in-memory store
+  }
+
+  try {
+    const RedisStore = require('rate-limit-redis').default;
+    const { redisClient } = require('../config/redis');
+    return new RedisStore({
+      sendCommand: (...args: string[]) =>
+        redisClient.call(args[0], ...args.slice(1)) as Promise<unknown>,
+      prefix: `rl:${prefix}:`,
+    });
+  } catch {
+    return undefined;
+  }
 }
 
-/**
- * General API rate limiter: 100 requests per minute
- */
 export const generalLimiter = rateLimit({
   windowMs: 60 * 1000,
-  max: 100,
+  max: isDev ? 1000 : 100,
   standardHeaders: true,
   legacyHeaders: false,
   store: createStore('general'),
@@ -27,12 +34,9 @@ export const generalLimiter = rateLimit({
   },
 });
 
-/**
- * Auth endpoint rate limiter: 10 requests per minute
- */
 export const authLimiter = rateLimit({
   windowMs: 60 * 1000,
-  max: 10,
+  max: isDev ? 100 : 10,
   standardHeaders: true,
   legacyHeaders: false,
   store: createStore('auth'),
@@ -43,12 +47,9 @@ export const authLimiter = rateLimit({
   },
 });
 
-/**
- * Scan trigger rate limiter: 5 requests per minute
- */
 export const scanLimiter = rateLimit({
   windowMs: 60 * 1000,
-  max: 5,
+  max: isDev ? 50 : 5,
   standardHeaders: true,
   legacyHeaders: false,
   store: createStore('scan'),

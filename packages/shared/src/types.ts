@@ -212,4 +212,9 @@ export interface IRecommendation {
   alternativePackage?: string;
   scoreImpact: number;
   migrationUrl?: string;
+  fixSteps?: string[];
+  packageName?: string;
+  ecosystem?: string;
+  currentScore?: number;
+  grade?: string;
 }

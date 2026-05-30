@@ -6,7 +6,8 @@ const IV_LENGTH = 16;
 const AUTH_TAG_LENGTH = 16;
 
 function getKey(): Buffer {
-  return Buffer.from(config.ENCRYPTION_KEY, 'hex');
+  // Derive a 32-byte key from whatever length ENCRYPTION_KEY is provided
+  return crypto.createHash('sha256').update(config.ENCRYPTION_KEY).digest();
 }
 
 /**

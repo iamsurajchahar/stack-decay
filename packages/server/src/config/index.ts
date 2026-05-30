@@ -6,25 +6,27 @@ const envSchema = z.object({
   CLIENT_URL: z.string().url().default('http://localhost:5173'),
   LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace']).default('info'),
 
-  GITHUB_CLIENT_ID: z.string().min(1, 'GITHUB_CLIENT_ID is required'),
-  GITHUB_CLIENT_SECRET: z.string().min(1, 'GITHUB_CLIENT_SECRET is required'),
-  GITHUB_CALLBACK_URL: z.string().url().default('http://localhost:4000/api/auth/github/callback'),
+  GITHUB_CLIENT_ID: z.string().default(''),
+  GITHUB_CLIENT_SECRET: z.string().default(''),
+  GITHUB_CALLBACK_URL: z.string().default('http://localhost:4000/api/auth/github/callback'),
 
-  JWT_SECRET: z.string().min(32, 'JWT_SECRET must be at least 32 characters'),
+  JWT_SECRET: z.string().min(16, 'JWT_SECRET must be at least 16 characters'),
   JWT_EXPIRES_IN: z.string().default('7d'),
 
-  MONGODB_URI: z.string().default('mongodb://localhost:27017/stack-decay'),
-  REDIS_HOST: z.string().default('localhost'),
-  REDIS_PORT: z.coerce.number().int().positive().default(6379),
-  REDIS_PASSWORD: z.string().optional(),
+  MONGODB_URI: z.string().default('mongodb://localhost:27017/stack-decay-score'),
+  REDIS_HOST: z.string().default(''),
+  REDIS_PORT: z.coerce.number().int().default(6379),
+  REDIS_PASSWORD: z.string().default(''),
 
-  ENCRYPTION_KEY: z.string().length(64, 'ENCRYPTION_KEY must be 64 hex characters (32 bytes)'),
+  ENCRYPTION_KEY: z.string().min(16, 'ENCRYPTION_KEY must be at least 16 hex characters'),
 
-  LIBRARIES_IO_API_KEY: z.string().optional(),
-  NVD_API_KEY: z.string().optional(),
+  LIBRARIES_IO_API_KEY: z.string().default(''),
+  NVD_API_KEY: z.string().default(''),
 
-  SENDGRID_API_KEY: z.string().optional(),
-  SLACK_WEBHOOK_URL: z.string().url().optional(),
+  SENDGRID_API_KEY: z.string().default(''),
+  SLACK_WEBHOOK_URL: z.string().default(''),
+  DISCORD_WEBHOOK_URL: z.string().default(''),
+  GITHUB_WEBHOOK_SECRET: z.string().default(''),
 });
 
 type EnvConfig = z.infer<typeof envSchema>;
