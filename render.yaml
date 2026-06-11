@@ -3,10 +3,12 @@ services:
     name: stack-decay-api
     runtime: node
     plan: free
-    buildCommand: corepack enable && corepack prepare pnpm@9.15.9 --activate && pnpm install --frozen-lockfile && pnpm --filter @stack-decay/shared build && pnpm --filter @stack-decay/server build
+    buildCommand: npx -y pnpm@9.15.9 install --frozen-lockfile && npx -y pnpm@9.15.9 --filter @stack-decay/shared build && npx -y pnpm@9.15.9 --filter @stack-decay/server build
     startCommand: node packages/server/dist/server.js
     healthCheckPath: /health
     envVars:
+      - key: NODE_VERSION
+        value: "22"
       - key: NODE_ENV
         value: production
       - key: START_WORKERS
