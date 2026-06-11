@@ -4,9 +4,10 @@
   "private": true,
   "description": "Shared types, constants, and utilities for Stack Decay Score",
   "main": "dist/index.js",
+  "module": "dist/esm/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && tsc -p tsconfig.esm.json",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"
   },
