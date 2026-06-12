@@ -29,25 +29,25 @@ export function AlertHistory({ notifications }: Props) {
   }
 
   return (
-    <div className="bg-white border rounded-lg overflow-hidden">
+    <div className="bg-white border border-gray-200 rounded-lg overflow-hidden dark:bg-gray-800 dark:border-gray-700">
       <table className="w-full">
         <thead>
-          <tr className="bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          <tr className="bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:bg-gray-900/50 dark:text-gray-400">
             <th className="px-4 py-3">Date</th>
             <th className="px-4 py-3">Channel</th>
             <th className="px-4 py-3">Subject</th>
             <th className="px-4 py-3">Status</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-gray-100">
+        <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
           {notifications.map((notif: any, i: number) => {
             const ChannelIcon = channelIcons[notif.channel] || Mail;
             const status = statusConfig[notif.status] || statusConfig.pending;
             const StatusIcon = status.icon;
 
             return (
-              <tr key={notif.id || notif._id || i} className="hover:bg-gray-50">
-                <td className="px-4 py-3 text-sm text-gray-600">
+              <tr key={notif.id || notif._id || i} className="hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-300">
                   {new Date(notif.createdAt).toLocaleDateString()} {new Date(notif.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </td>
                 <td className="px-4 py-3">
@@ -56,7 +56,7 @@ export function AlertHistory({ notifications }: Props) {
                     <span className="text-sm capitalize">{notif.channel}</span>
                   </div>
                 </td>
-                <td className="px-4 py-3 text-sm text-gray-900 max-w-xs truncate">
+                <td className="px-4 py-3 text-sm text-gray-900 max-w-xs truncate dark:text-gray-100">
                   {notif.subject}
                 </td>
                 <td className="px-4 py-3">

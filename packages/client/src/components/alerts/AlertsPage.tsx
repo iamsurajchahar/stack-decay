@@ -40,8 +40,8 @@ export function AlertsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Alerts</h1>
-          <p className="text-sm text-gray-500 mt-1">Get notified when your stack health changes</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Alerts</h1>
+          <p className="text-sm text-gray-500 mt-1 dark:text-gray-400">Get notified when your stack health changes</p>
         </div>
         <button
           onClick={() => setShowForm(true)}
@@ -52,11 +52,11 @@ export function AlertsPage() {
       </div>
 
       {/* Section tabs */}
-      <div className="flex gap-1 bg-gray-100 p-1 rounded-lg w-fit">
+      <div className="flex gap-1 bg-gray-100 p-1 rounded-lg w-fit dark:bg-gray-800">
         <button
           onClick={() => setActiveSection('rules')}
           className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-            activeSection === 'rules' ? 'bg-white shadow text-gray-900' : 'text-gray-600 hover:text-gray-900'
+            activeSection === 'rules' ? 'bg-white shadow text-gray-900 dark:bg-gray-700 dark:text-white' : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'
           }`}
         >
           Rules ({rules?.length || 0})
@@ -64,7 +64,7 @@ export function AlertsPage() {
         <button
           onClick={() => setActiveSection('history')}
           className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-            activeSection === 'history' ? 'bg-white shadow text-gray-900' : 'text-gray-600 hover:text-gray-900'
+            activeSection === 'history' ? 'bg-white shadow text-gray-900 dark:bg-gray-700 dark:text-white' : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'
           }`}
         >
           History ({history?.items?.length || 0})

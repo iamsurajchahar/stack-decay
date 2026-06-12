@@ -45,35 +45,35 @@ export function WebhookConfig() {
   };
 
   return (
-    <div className="bg-white border rounded-xl p-6">
+    <div className="bg-white border border-gray-200 rounded-xl p-6 dark:bg-gray-800 dark:border-gray-700">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-semibold text-gray-900">Webhook Endpoints</h2>
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Webhook Endpoints</h2>
         <button
           onClick={() => setShowAdd(true)}
-          className="flex items-center gap-1 text-sm text-indigo-600 hover:text-indigo-800"
+          className="flex items-center gap-1 text-sm text-indigo-600 hover:text-indigo-800 dark:text-indigo-400 dark:hover:text-indigo-300"
         >
           <Plus className="w-4 h-4" /> Add Webhook
         </button>
       </div>
 
       {webhooks.length === 0 && !showAdd && (
-        <p className="text-sm text-gray-500 py-4 text-center">
+        <p className="text-sm text-gray-500 py-4 text-center dark:text-gray-400">
           No webhooks configured. Add one to receive HTTP POST notifications.
         </p>
       )}
 
       <div className="space-y-3">
         {webhooks.map((wh) => (
-          <div key={wh.id} className="flex items-center justify-between border rounded-lg p-3">
+          <div key={wh.id} className="flex items-center justify-between border border-gray-200 rounded-lg p-3 dark:border-gray-700">
             <div className="flex items-center gap-3">
               <Webhook className="w-4 h-4 text-gray-400" />
               <div>
-                <p className="text-sm font-mono text-gray-700">
+                <p className="text-sm font-mono text-gray-700 dark:text-gray-300">
                   {wh.url.replace(/(https?:\/\/[^/]+)(.*)/, '$1/***')}
                 </p>
                 <div className="flex gap-1 mt-1">
                   {wh.events.map((ev) => (
-                    <span key={ev} className="text-xs bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded">
+                    <span key={ev} className="text-xs bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">
                       {ev.replace('_', ' ')}
                     </span>
                   ))}
@@ -95,19 +95,19 @@ export function WebhookConfig() {
       </div>
 
       {showAdd && (
-        <div className="mt-4 border rounded-lg p-4 bg-gray-50 space-y-3">
+        <div className="mt-4 border border-gray-200 rounded-lg p-4 bg-gray-50 space-y-3 dark:border-gray-700 dark:bg-gray-900/50">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Endpoint URL</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1 dark:text-gray-300">Endpoint URL</label>
             <input
               type="url"
               value={newUrl}
               onChange={(e) => setNewUrl(e.target.value)}
               placeholder="https://your-server.com/webhooks/stack-decay"
-              className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 dark:placeholder:text-gray-500"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Events</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1 dark:text-gray-300">Events</label>
             <div className="flex flex-wrap gap-2">
               {eventOptions.map((ev) => (
                 <button
@@ -116,8 +116,8 @@ export function WebhookConfig() {
                   onClick={() => toggleEvent(ev.value)}
                   className={`px-2 py-1 rounded text-xs font-medium border transition-colors ${
                     newEvents.includes(ev.value)
-                      ? 'bg-indigo-50 border-indigo-300 text-indigo-700'
-                      : 'bg-white border-gray-200 text-gray-500'
+                      ? 'bg-indigo-50 border-indigo-300 text-indigo-700 dark:bg-indigo-900/30 dark:border-indigo-700 dark:text-indigo-300'
+                      : 'bg-white border-gray-200 text-gray-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-400'
                   }`}
                 >
                   {ev.label}
@@ -126,7 +126,7 @@ export function WebhookConfig() {
             </div>
           </div>
           <div className="flex justify-end gap-2">
-            <button onClick={() => setShowAdd(false)} className="px-3 py-1.5 text-sm text-gray-600">Cancel</button>
+            <button onClick={() => setShowAdd(false)} className="px-3 py-1.5 text-sm text-gray-600 dark:text-gray-400">Cancel</button>
             <button onClick={addWebhook} className="px-3 py-1.5 bg-indigo-600 text-white text-sm rounded-lg hover:bg-indigo-700">Add</button>
           </div>
         </div>

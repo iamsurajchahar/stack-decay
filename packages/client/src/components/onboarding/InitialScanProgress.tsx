@@ -84,17 +84,17 @@ export function InitialScanProgress({ repoIds, repos, onComplete }: Props) {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-bold text-gray-900">Initial Scan</h2>
-        <p className="text-sm text-gray-500 mt-1">
+        <h2 className="text-xl font-bold text-gray-900 dark:text-white">Initial Scan</h2>
+        <p className="text-sm text-gray-500 mt-1 dark:text-gray-400">
           Scanning {repoIds.length} {repoIds.length === 1 ? 'repository' : 'repositories'}. This may take a few minutes.
         </p>
       </div>
 
       <div className="space-y-3">
         {scans.map((scan) => (
-          <div key={scan.repoId} className="border rounded-lg p-4">
+          <div key={scan.repoId} className="border border-gray-200 rounded-lg p-4 dark:border-gray-700">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-gray-900">{scan.name}</span>
+              <span className="text-sm font-medium text-gray-900 dark:text-white">{scan.name}</span>
               <div className="flex items-center gap-2">
                 {scan.status === 'completed' ? (
                   <CheckCircle className="w-4 h-4 text-green-500" />
@@ -103,10 +103,10 @@ export function InitialScanProgress({ repoIds, repos, onComplete }: Props) {
                 ) : scan.status !== 'pending' ? (
                   <Loader2 className="w-4 h-4 text-indigo-500 animate-spin" />
                 ) : null}
-                <span className="text-xs text-gray-500">{statusLabels[scan.status]}</span>
+                <span className="text-xs text-gray-500 dark:text-gray-400">{statusLabels[scan.status]}</span>
               </div>
             </div>
-            <div className="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
+            <div className="w-full bg-gray-100 rounded-full h-2 overflow-hidden dark:bg-gray-700">
               <div
                 className={`h-2 rounded-full transition-all duration-500 ${
                   scan.status === 'completed'
@@ -122,7 +122,7 @@ export function InitialScanProgress({ repoIds, repos, onComplete }: Props) {
         ))}
       </div>
 
-      <div className="text-center text-sm text-gray-500">
+      <div className="text-center text-sm text-gray-500 dark:text-gray-400">
         {completedCount} of {scans.length} complete
       </div>
 

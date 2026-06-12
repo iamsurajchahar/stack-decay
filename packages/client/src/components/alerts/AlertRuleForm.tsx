@@ -40,10 +40,10 @@ export function AlertRuleForm({ onSubmit, onClose, isSubmitting }: Props) {
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl w-full max-w-md shadow-xl">
-        <div className="flex items-center justify-between p-4 border-b">
-          <h2 className="text-lg font-semibold">Create Alert Rule</h2>
-          <button onClick={onClose} className="p-1 text-gray-400 hover:text-gray-600">
+      <div className="bg-white rounded-xl w-full max-w-md shadow-xl dark:bg-gray-800">
+        <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Create Alert Rule</h2>
+          <button onClick={onClose} className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -51,11 +51,11 @@ export function AlertRuleForm({ onSubmit, onClose, isSubmitting }: Props) {
         <form onSubmit={handleSubmit} className="p-4 space-y-4">
           {/* Rule Type */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Alert Type</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1 dark:text-gray-300">Alert Type</label>
             <select
               value={ruleType}
               onChange={(e) => setRuleType(e.target.value)}
-              className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
             >
               {ruleTypes.map((rt) => (
                 <option key={rt.value} value={rt.value}>{rt.label}</option>
@@ -66,7 +66,7 @@ export function AlertRuleForm({ onSubmit, onClose, isSubmitting }: Props) {
           {/* Score threshold */}
           {ruleType === 'score_drop' && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 mb-1 dark:text-gray-300">
                 Score Threshold: {thresholdValue}
               </label>
               <input
@@ -87,11 +87,11 @@ export function AlertRuleForm({ onSubmit, onClose, isSubmitting }: Props) {
           {/* Days threshold */}
           {ruleType === 'eol_approaching' && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Days before EOL</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1 dark:text-gray-300">Days before EOL</label>
               <select
                 value={thresholdDays}
                 onChange={(e) => setThresholdDays(Number(e.target.value))}
-                className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
               >
                 <option value={30}>30 days</option>
                 <option value={60}>60 days</option>
@@ -104,7 +104,7 @@ export function AlertRuleForm({ onSubmit, onClose, isSubmitting }: Props) {
 
           {/* Channels */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Notification Channels</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-300">Notification Channels</label>
             <div className="flex gap-3">
               {['email', 'webhook', 'slack'].map((ch) => (
                 <button
@@ -113,8 +113,8 @@ export function AlertRuleForm({ onSubmit, onClose, isSubmitting }: Props) {
                   onClick={() => toggleChannel(ch)}
                   className={`px-3 py-1.5 rounded-lg text-sm font-medium border transition-colors ${
                     channels.includes(ch)
-                      ? 'bg-indigo-50 border-indigo-300 text-indigo-700'
-                      : 'bg-white border-gray-200 text-gray-500 hover:border-gray-300'
+                      ? 'bg-indigo-50 border-indigo-300 text-indigo-700 dark:bg-indigo-900/30 dark:border-indigo-700 dark:text-indigo-300'
+                      : 'bg-white border-gray-200 text-gray-500 hover:border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-400 dark:hover:border-gray-500'
                   }`}
                 >
                   {ch.charAt(0).toUpperCase() + ch.slice(1)}
@@ -124,11 +124,11 @@ export function AlertRuleForm({ onSubmit, onClose, isSubmitting }: Props) {
           </div>
 
           {/* Submit */}
-          <div className="flex justify-end gap-3 pt-4 border-t">
+          <div className="flex justify-end gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-sm text-gray-600 hover:text-gray-800"
+              className="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200"
             >
               Cancel
             </button>

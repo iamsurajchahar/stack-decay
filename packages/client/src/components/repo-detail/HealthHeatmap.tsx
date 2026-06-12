@@ -18,11 +18,11 @@ function getHeatColor(score: number): string {
 }
 
 function getHeatBorder(score: number): string {
-  if (score >= 80) return 'ring-green-600';
-  if (score >= 60) return 'ring-green-400';
-  if (score >= 40) return 'ring-yellow-500';
-  if (score >= 20) return 'ring-orange-500';
-  return 'ring-red-600';
+  if (score >= 80) return 'hover:ring-green-600';
+  if (score >= 60) return 'hover:ring-green-400';
+  if (score >= 40) return 'hover:ring-yellow-500';
+  if (score >= 20) return 'hover:ring-orange-500';
+  return 'hover:ring-red-600';
 }
 
 export function HealthHeatmap({ repoId }: HealthHeatmapProps) {
@@ -72,7 +72,7 @@ export function HealthHeatmap({ repoId }: HealthHeatmapProps) {
                 className={clsx(
                   'h-8 rounded-md text-[10px] font-medium text-white px-2 truncate max-w-[120px] transition-all hover:ring-2',
                   getHeatColor(score),
-                  `hover:${getHeatBorder(score)}`,
+                  getHeatBorder(score),
                 )}
                 style={{ minWidth: '2rem' }}
               >

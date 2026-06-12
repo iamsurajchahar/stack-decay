@@ -16,10 +16,20 @@ function applyTheme(theme: Theme) {
   }
 }
 
-export const useThemeStore = create<ThemeState>((set) => {
-  const saved = (localStorage.getItem('theme') as Theme) || 'system';
+const VALID_THEMES: Theme[] = ['light', 'dark', 'system'];
+
+export const useThemeStore = create<ThemeState>((set, get) => {
+  const stored = localStorage.getItem('theme') as Theme | null;
+  const saved = stored && VALID_THEMES.includes(stored) ? stored : 'system';
   // Apply on load
   applyTheme(saved);
+
+  // Re-apply when the OS theme changes while in 'system' mode
+  window
+    .matchMedia('(prefers-color-scheme: dark)')
+    .addEventListener('change', () => {
+      if (get().theme === 'system') applyTheme('system');
+    });
 
   return {
     theme: saved,

@@ -25,8 +25,8 @@ export function ScoreGauge({ score, grade, size = 96 }: ScoreGaugeProps) {
           cy={center}
           r={radius}
           fill="none"
-          stroke="#e5e7eb"
           strokeWidth={6}
+          className="stroke-gray-200 dark:stroke-gray-700"
         />
         {/* Progress arc */}
         <circle
@@ -46,7 +46,7 @@ export function ScoreGauge({ score, grade, size = 96 }: ScoreGaugeProps) {
         <span className="text-2xl font-bold" style={{ color }}>
           {score != null ? Math.round(score) : '--'}
         </span>
-        <span className="text-xs font-semibold text-gray-500">{displayGrade}</span>
+        <span className="text-xs font-semibold text-gray-500 dark:text-gray-400">{displayGrade}</span>
       </div>
     </div>
   );

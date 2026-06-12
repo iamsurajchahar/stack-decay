@@ -42,8 +42,8 @@ export function RepoSelector({ onSelect }: Props) {
   return (
     <div className="space-y-4">
       <div>
-        <h2 className="text-xl font-bold text-gray-900">Select Repositories</h2>
-        <p className="text-sm text-gray-500 mt-1">Choose which repos to monitor for stack health</p>
+        <h2 className="text-xl font-bold text-gray-900 dark:text-white">Select Repositories</h2>
+        <p className="text-sm text-gray-500 mt-1 dark:text-gray-400">Choose which repos to monitor for stack health</p>
       </div>
 
       {/* Search + select all */}
@@ -55,12 +55,12 @@ export function RepoSelector({ onSelect }: Props) {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search repositories..."
-            className="w-full pl-9 pr-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 dark:placeholder:text-gray-500"
           />
         </div>
         <button
           onClick={selectAll}
-          className="px-3 py-2 text-sm text-indigo-600 hover:text-indigo-800 border rounded-lg hover:bg-indigo-50"
+          className="px-3 py-2 text-sm text-indigo-600 hover:text-indigo-800 border border-gray-300 rounded-lg hover:bg-indigo-50 dark:border-gray-600 dark:text-indigo-400 dark:hover:text-indigo-300 dark:hover:bg-indigo-900/20"
         >
           {selected.size === filtered.length ? 'Deselect All' : 'Select All'}
         </button>
@@ -70,9 +70,9 @@ export function RepoSelector({ onSelect }: Props) {
       {isLoading ? (
         <LoadingSpinner />
       ) : (
-        <div className="max-h-80 overflow-y-auto space-y-1 border rounded-lg">
+        <div className="max-h-80 overflow-y-auto space-y-1 border border-gray-200 rounded-lg dark:border-gray-700">
           {filtered.length === 0 ? (
-            <p className="text-sm text-gray-500 p-4 text-center">No repositories found</p>
+            <p className="text-sm text-gray-500 p-4 text-center dark:text-gray-400">No repositories found</p>
           ) : (
             filtered.map((repo: any) => {
               const id = repo.id?.toString() || repo.github_repo_id?.toString();
@@ -82,19 +82,19 @@ export function RepoSelector({ onSelect }: Props) {
                 <button
                   key={id}
                   onClick={() => toggleRepo(id)}
-                  className={`w-full flex items-center justify-between p-3 text-left hover:bg-gray-50 transition-colors ${
-                    isSelected ? 'bg-indigo-50' : ''
+                  className={`w-full flex items-center justify-between p-3 text-left hover:bg-gray-50 transition-colors dark:hover:bg-gray-700/50 ${
+                    isSelected ? 'bg-indigo-50 dark:bg-indigo-900/30' : ''
                   }`}
                 >
                   <div className="flex items-center gap-3">
                     <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${
-                      isSelected ? 'bg-indigo-600 border-indigo-600' : 'border-gray-300'
+                      isSelected ? 'bg-indigo-600 border-indigo-600' : 'border-gray-300 dark:border-gray-600'
                     }`}>
                       {isSelected && <Check className="w-3 h-3 text-white" />}
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-gray-900">{repo.full_name || repo.name}</p>
-                      <div className="flex items-center gap-3 text-xs text-gray-500 mt-0.5">
+                      <p className="text-sm font-medium text-gray-900 dark:text-white">{repo.full_name || repo.name}</p>
+                      <div className="flex items-center gap-3 text-xs text-gray-500 mt-0.5 dark:text-gray-400">
                         {repo.language && <span>{repo.language}</span>}
                         {repo.stargazers_count != null && (
                           <span className="flex items-center gap-0.5">

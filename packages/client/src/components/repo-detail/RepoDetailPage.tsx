@@ -55,7 +55,7 @@ export function RepoDetailPage() {
   }
 
   if (!repo) {
-    return <div className="text-center text-gray-500">Repository not found</div>;
+    return <div className="text-center text-gray-500 dark:text-gray-400">Repository not found</div>;
   }
 
   const tabsWithCounts = tabs.map((t) => ({

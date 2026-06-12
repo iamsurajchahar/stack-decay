@@ -40,25 +40,25 @@ export function DepDetailPage() {
       {/* Back link */}
       <Link
         to={`/repos/${repoId}`}
-        className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700"
+        className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
       >
         <ArrowLeft className="w-4 h-4" /> Back to repository
       </Link>
 
       {/* Package Header */}
-      <div className="bg-white rounded-xl border border-gray-200 p-6">
+      <div className="bg-white rounded-xl border border-gray-200 p-6 dark:bg-gray-800 dark:border-gray-700">
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
-              <Package className="w-6 h-6 text-indigo-600" />
+            <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center dark:bg-indigo-900/40">
+              <Package className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">{pkg?.name || name}</h1>
-              <p className="text-sm text-gray-500 mt-1">
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{pkg?.name || name}</h1>
+              <p className="text-sm text-gray-500 mt-1 dark:text-gray-400">
                 {pkg?.ecosystem || ecosystem} &middot; v{pkg?.latestVersion || 'unknown'}
               </p>
               {pkg?.description && (
-                <p className="text-sm text-gray-600 mt-2 max-w-xl">{pkg.description}</p>
+                <p className="text-sm text-gray-600 mt-2 max-w-xl dark:text-gray-400">{pkg.description}</p>
               )}
             </div>
           </div>
@@ -71,7 +71,7 @@ export function DepDetailPage() {
                 href={pkg.homepageUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-gray-600"
+                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
               >
                 <ExternalLink className="w-5 h-5" />
               </a>
@@ -81,26 +81,26 @@ export function DepDetailPage() {
 
         {/* Quick stats */}
         {pkg?.latestHealth && (
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mt-6 pt-6 border-t">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
             <div>
-              <p className="text-xs text-gray-500">Stars</p>
-              <p className="text-lg font-semibold">{(pkg.latestHealth.community?.starsCount || 0).toLocaleString()}</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">Stars</p>
+              <p className="text-lg font-semibold dark:text-gray-100">{(pkg.latestHealth.community?.starsCount || 0).toLocaleString()}</p>
             </div>
             <div>
-              <p className="text-xs text-gray-500">Contributors</p>
-              <p className="text-lg font-semibold">{pkg.latestHealth.community?.contributorCount || 0}</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">Contributors</p>
+              <p className="text-lg font-semibold dark:text-gray-100">{pkg.latestHealth.community?.contributorCount || 0}</p>
             </div>
             <div>
-              <p className="text-xs text-gray-500">Open CVEs</p>
-              <p className="text-lg font-semibold text-red-600">{pkg.latestHealth.vulnerability?.openCveCount || 0}</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">Open CVEs</p>
+              <p className="text-lg font-semibold text-red-600 dark:text-red-400">{pkg.latestHealth.vulnerability?.openCveCount || 0}</p>
             </div>
             <div>
-              <p className="text-xs text-gray-500">Last Release</p>
-              <p className="text-lg font-semibold">{pkg.latestHealth.maintenance?.daysSinceLastRelease || '?'}d ago</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">Last Release</p>
+              <p className="text-lg font-semibold dark:text-gray-100">{pkg.latestHealth.maintenance?.daysSinceLastRelease || '?'}d ago</p>
             </div>
             <div>
-              <p className="text-xs text-gray-500">License</p>
-              <p className="text-lg font-semibold">{pkg.latestHealth.license?.spdx || 'Unknown'}</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">License</p>
+              <p className="text-lg font-semibold dark:text-gray-100">{pkg.latestHealth.license?.spdx || 'Unknown'}</p>
             </div>
           </div>
         )}
@@ -108,8 +108,8 @@ export function DepDetailPage() {
 
       {/* Score Breakdown */}
       {pkg?.latestHealth && (
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
-          <h2 className="text-lg font-semibold mb-4">Score Breakdown</h2>
+        <div className="bg-white rounded-xl border border-gray-200 p-6 dark:bg-gray-800 dark:border-gray-700">
+          <h2 className="text-lg font-semibold mb-4 dark:text-gray-100">Score Breakdown</h2>
           <ScoreBreakdown score={null} />
         </div>
       )}
@@ -117,7 +117,7 @@ export function DepDetailPage() {
       {/* Tabs */}
       <TabNav tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
 
-      <div className="bg-white rounded-xl border border-gray-200 p-6">
+      <div className="bg-white rounded-xl border border-gray-200 p-6 dark:bg-gray-800 dark:border-gray-700">
         {activeTab === 'maintenance' && <MaintenanceChart ecosystem={ecosystem} name={name} />}
         {activeTab === 'community' && <CommunityChart ecosystem={ecosystem} name={name} />}
         {activeTab === 'vulnerabilities' && <CveList vulnerabilities={pkg?.vulnerabilities || []} />}

@@ -58,28 +58,28 @@ export function OnboardingFlow() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4 dark:bg-gray-900">
       <div className="w-full max-w-2xl">
         {/* Progress */}
         <div className="flex items-center justify-center gap-2 mb-8">
           {steps.map((label, i) => (
             <div key={label} className="flex items-center">
               <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-                i <= step ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-500'
+                i <= step ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-500 dark:bg-gray-700 dark:text-gray-400'
               }`}>
                 {i + 1}
               </div>
-              <span className={`ml-2 text-sm ${i <= step ? 'text-gray-900' : 'text-gray-400'}`}>
+              <span className={`ml-2 text-sm ${i <= step ? 'text-gray-900 dark:text-white' : 'text-gray-400 dark:text-gray-500'}`}>
                 {label}
               </span>
               {i < steps.length - 1 && (
-                <div className={`w-12 h-0.5 mx-3 ${i < step ? 'bg-indigo-600' : 'bg-gray-200'}`} />
+                <div className={`w-12 h-0.5 mx-3 ${i < step ? 'bg-indigo-600' : 'bg-gray-200 dark:bg-gray-700'}`} />
               )}
             </div>
           ))}
         </div>
 
-        <div className="bg-white rounded-xl border shadow-sm p-6">
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 dark:bg-gray-800 dark:border-gray-700">
           {step === 0 && (
             <RepoSelector onSelect={handleReposSelected} />
           )}
@@ -87,8 +87,8 @@ export function OnboardingFlow() {
           {step === 1 && (
             <div className="space-y-6">
               <div>
-                <h2 className="text-xl font-bold text-gray-900">Scan Frequency</h2>
-                <p className="text-sm text-gray-500 mt-1">
+                <h2 className="text-xl font-bold text-gray-900 dark:text-white">Scan Frequency</h2>
+                <p className="text-sm text-gray-500 mt-1 dark:text-gray-400">
                   How often should we check your {selectedRepos.length} repos?
                 </p>
               </div>
@@ -105,12 +105,12 @@ export function OnboardingFlow() {
                     onClick={() => setScanFrequency(opt.value)}
                     className={`p-4 rounded-lg border text-left transition-all ${
                       scanFrequency === opt.value
-                        ? 'border-indigo-500 bg-indigo-50 ring-2 ring-indigo-200'
-                        : 'border-gray-200 hover:border-gray-300'
+                        ? 'border-indigo-500 bg-indigo-50 ring-2 ring-indigo-200 dark:bg-indigo-900/30 dark:ring-indigo-800'
+                        : 'border-gray-200 hover:border-gray-300 dark:border-gray-700 dark:hover:border-gray-600'
                     }`}
                   >
-                    <p className="font-medium text-gray-900">{opt.label}</p>
-                    <p className="text-xs text-gray-500 mt-1">{opt.desc}</p>
+                    <p className="font-medium text-gray-900 dark:text-white">{opt.label}</p>
+                    <p className="text-xs text-gray-500 mt-1 dark:text-gray-400">{opt.desc}</p>
                   </button>
                 ))}
               </div>
@@ -118,7 +118,7 @@ export function OnboardingFlow() {
               <div className="flex justify-between pt-4">
                 <button
                   onClick={() => setStep(0)}
-                  className="px-4 py-2 text-sm text-gray-600 hover:text-gray-800"
+                  className="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200"
                 >
                   Back
                 </button>

@@ -16,16 +16,16 @@ export function RepoCard({ repo }: RepoCardProps) {
   return (
     <button
       onClick={() => navigate(`/repos/${repo.id}`)}
-      className="card text-left transition-all hover:shadow-md hover:border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      className="card text-left transition-all hover:shadow-md hover:border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:hover:border-blue-800"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1 overflow-hidden">
-          <p className="truncate text-sm font-semibold text-gray-900">{repo.fullName}</p>
+          <p className="truncate text-sm font-semibold text-gray-900 dark:text-white">{repo.fullName}</p>
           <div className="mt-1 flex items-center gap-2">
             {repo.language && (
-              <span className="badge bg-gray-100 text-gray-600">{repo.language}</span>
+              <span className="badge bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300">{repo.language}</span>
             )}
-            <span className="badge bg-gray-100 text-gray-600">{repo.scanFrequency}</span>
+            <span className="badge bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300">{repo.scanFrequency}</span>
           </div>
         </div>
         <ScoreBadge grade={repo.latestGrade || '?'} size="md" />
@@ -33,10 +33,10 @@ export function RepoCard({ repo }: RepoCardProps) {
 
       <div className="mt-4 flex items-end justify-between">
         <div>
-          <p className={clsx('text-2xl font-bold', repo.latestScore != null ? getScoreColor(repo.latestScore) : 'text-gray-300')}>
+          <p className={clsx('text-2xl font-bold', repo.latestScore != null ? getScoreColor(repo.latestScore) : 'text-gray-300 dark:text-gray-600')}>
             {repo.latestScore != null ? Math.round(repo.latestScore) : '--'}
           </p>
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-gray-500 dark:text-gray-400">
             Scanned {formatRelative(repo.lastScannedAt)}
           </p>
         </div>

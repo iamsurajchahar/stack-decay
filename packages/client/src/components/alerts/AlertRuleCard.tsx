@@ -6,11 +6,11 @@ interface Props {
 }
 
 const ruleTypeConfig: Record<string, { label: string; icon: any; color: string }> = {
-  score_drop: { label: 'Score Drop', icon: TrendingDown, color: 'text-red-600 bg-red-50' },
-  eol_approaching: { label: 'EOL Approaching', icon: Clock, color: 'text-orange-600 bg-orange-50' },
-  new_cve: { label: 'New CVE', icon: ShieldAlert, color: 'text-red-600 bg-red-50' },
-  grade_change: { label: 'Grade Change', icon: ArrowDownCircle, color: 'text-yellow-600 bg-yellow-50' },
-  deprecated_dep: { label: 'Deprecated Dependency', icon: AlertTriangle, color: 'text-orange-600 bg-orange-50' },
+  score_drop: { label: 'Score Drop', icon: TrendingDown, color: 'text-red-600 bg-red-50 dark:text-red-400 dark:bg-red-900/30' },
+  eol_approaching: { label: 'EOL Approaching', icon: Clock, color: 'text-orange-600 bg-orange-50 dark:text-orange-400 dark:bg-orange-900/30' },
+  new_cve: { label: 'New CVE', icon: ShieldAlert, color: 'text-red-600 bg-red-50 dark:text-red-400 dark:bg-red-900/30' },
+  grade_change: { label: 'Grade Change', icon: ArrowDownCircle, color: 'text-yellow-600 bg-yellow-50 dark:text-yellow-400 dark:bg-yellow-900/30' },
+  deprecated_dep: { label: 'Deprecated Dependency', icon: AlertTriangle, color: 'text-orange-600 bg-orange-50 dark:text-orange-400 dark:bg-orange-900/30' },
 };
 
 export function AlertRuleCard({ rule, onDelete }: Props) {
@@ -18,14 +18,14 @@ export function AlertRuleCard({ rule, onDelete }: Props) {
   const Icon = config.icon;
 
   return (
-    <div className="bg-white border rounded-lg p-4 flex items-center justify-between hover:shadow-sm transition-shadow">
+    <div className="bg-white border border-gray-200 rounded-lg p-4 flex items-center justify-between hover:shadow-sm transition-shadow dark:bg-gray-800 dark:border-gray-700">
       <div className="flex items-center gap-4">
         <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${config.color}`}>
           <Icon className="w-5 h-5" />
         </div>
         <div>
-          <h3 className="font-medium text-gray-900">{config.label}</h3>
-          <p className="text-sm text-gray-500">
+          <h3 className="font-medium text-gray-900 dark:text-white">{config.label}</h3>
+          <p className="text-sm text-gray-500 dark:text-gray-400">
             {rule.ruleType === 'score_drop' && `Alert when score drops below ${rule.thresholdValue || 50}`}
             {rule.ruleType === 'eol_approaching' && `Alert ${rule.thresholdDays || 90} days before EOL`}
             {rule.ruleType === 'new_cve' && 'Alert on any new vulnerability'}
@@ -34,19 +34,19 @@ export function AlertRuleCard({ rule, onDelete }: Props) {
           </p>
           <div className="flex gap-2 mt-1">
             {rule.repositoryId ? (
-              <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded">Specific repo</span>
+              <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">Specific repo</span>
             ) : (
-              <span className="text-xs bg-indigo-50 text-indigo-600 px-2 py-0.5 rounded">All repos</span>
+              <span className="text-xs bg-indigo-50 text-indigo-600 px-2 py-0.5 rounded dark:bg-indigo-900/30 dark:text-indigo-400">All repos</span>
             )}
             {(rule.channels || []).map((ch: string) => (
-              <span key={ch} className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded capitalize">{ch}</span>
+              <span key={ch} className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded capitalize dark:bg-gray-700 dark:text-gray-300">{ch}</span>
             ))}
           </div>
         </div>
       </div>
 
       <div className="flex items-center gap-3">
-        <span className={`text-xs px-2 py-1 rounded-full ${rule.isEnabled ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
+        <span className={`text-xs px-2 py-1 rounded-full ${rule.isEnabled ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400'}`}>
           {rule.isEnabled ? 'Active' : 'Paused'}
         </span>
         <button

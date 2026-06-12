@@ -8,6 +8,7 @@ import {
   Legend,
 } from 'recharts';
 import type { IRepoScoreSnapshot } from '../../types';
+import { useIsDark, getChartTheme } from '../../hooks/useIsDark';
 
 interface ScoreBreakdownProps {
   score: IRepoScoreSnapshot | null;
@@ -15,6 +16,8 @@ interface ScoreBreakdownProps {
 }
 
 export function ScoreBreakdown({ score, previousScore }: ScoreBreakdownProps) {
+  const isDark = useIsDark();
+  const chartTheme = getChartTheme(isDark);
   if (!score) {
     return (
       <div className="card flex h-full items-center justify-center text-sm text-gray-400">
@@ -33,19 +36,19 @@ export function ScoreBreakdown({ score, previousScore }: ScoreBreakdownProps) {
 
   return (
     <div className="card">
-      <h3 className="mb-4 text-base font-semibold text-gray-900">Score Breakdown</h3>
+      <h3 className="mb-4 text-base font-semibold text-gray-900 dark:text-white">Score Breakdown</h3>
       <div className="h-72">
         <ResponsiveContainer width="100%" height="100%">
           <RadarChart cx="50%" cy="50%" outerRadius="70%" data={data}>
-            <PolarGrid stroke="#e5e7eb" />
+            <PolarGrid stroke={chartTheme.gridStroke} />
             <PolarAngleAxis
               dataKey="dimension"
-              tick={{ fontSize: 11, fill: '#6b7280' }}
+              tick={{ fontSize: 11, fill: chartTheme.tickFill }}
             />
             <PolarRadiusAxis
               angle={90}
               domain={[0, 100]}
-              tick={{ fontSize: 10, fill: '#9ca3af' }}
+              tick={{ fontSize: 10, fill: isDark ? '#6b7280' : '#9ca3af' }}
             />
             <Radar
               name="Current"
@@ -59,8 +62,8 @@ export function ScoreBreakdown({ score, previousScore }: ScoreBreakdownProps) {
               <Radar
                 name="Previous"
                 dataKey="previous"
-                stroke="#d1d5db"
-                fill="#d1d5db"
+                stroke={isDark ? '#6b7280' : '#d1d5db'}
+                fill={isDark ? '#6b7280' : '#d1d5db'}
                 fillOpacity={0.1}
                 strokeWidth={1}
                 strokeDasharray="4 4"

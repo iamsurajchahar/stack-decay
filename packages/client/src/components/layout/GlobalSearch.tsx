@@ -89,7 +89,7 @@ export function GlobalSearch() {
         className="input w-48 pl-9 pr-8 lg:w-80"
       />
       {query && (
-        <button onClick={() => { setQuery(''); setOpen(false); }} className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+        <button onClick={() => { setQuery(''); setOpen(false); }} className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
           <X className="h-4 w-4" />
         </button>
       )}
@@ -98,8 +98,8 @@ export function GlobalSearch() {
         <>
           <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
           <div className="absolute left-0 top-full z-50 mt-1 w-full min-w-[320px] max-h-[400px] overflow-y-auto rounded-lg border border-gray-200 bg-white shadow-xl dark:border-gray-700 dark:bg-gray-800">
-            {loading && <p className="px-4 py-3 text-sm text-gray-500">Searching...</p>}
-            {!loading && results.length === 0 && <p className="px-4 py-3 text-sm text-gray-500">No results found</p>}
+            {loading && <p className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">Searching...</p>}
+            {!loading && results.length === 0 && <p className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">No results found</p>}
             {results.map((r, i) => (
               <button
                 key={i}
@@ -111,7 +111,7 @@ export function GlobalSearch() {
                     <GitFork className="h-5 w-5 text-gray-400 mt-0.5 flex-shrink-0" />
                     <div>
                       <p className="text-sm font-medium text-gray-900 dark:text-white">{r.name}</p>
-                      <p className="text-xs text-gray-500">Repository {r.grade ? `· Grade ${r.grade}` : ''}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Repository {r.grade ? `· Grade ${r.grade}` : ''}</p>
                     </div>
                   </>
                 ) : (
@@ -119,7 +119,7 @@ export function GlobalSearch() {
                     <Package className="h-5 w-5 text-blue-500 mt-0.5 flex-shrink-0" />
                     <div>
                       <p className="text-sm font-medium text-gray-900 dark:text-white">{r.packageName} <span className="text-xs text-gray-400">{r.version}</span></p>
-                      <p className="text-xs text-gray-500">{r.ecosystem} · Found in {r.repos?.map(rr => rr.repoName).join(', ')}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">{r.ecosystem} · Found in {r.repos?.map(rr => rr.repoName).join(', ')}</p>
                     </div>
                   </>
                 )}

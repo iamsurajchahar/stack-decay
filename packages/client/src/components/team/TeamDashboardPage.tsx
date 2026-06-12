@@ -6,6 +6,7 @@ import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, PieChart, Pie,
 } from 'recharts';
 import { Shield, AlertTriangle, Package, TrendingDown, TrendingUp, Users } from 'lucide-react';
+import { useIsDark, getChartTheme } from '../../hooks/useIsDark';
 
 const GRADE_COLORS: Record<string, string> = {
   A: '#22c55e', B: '#84cc16', C: '#eab308', D: '#f97316', F: '#ef4444', 'N/A': '#9ca3af',
@@ -13,6 +14,7 @@ const GRADE_COLORS: Record<string, string> = {
 
 export function TeamDashboardPage() {
   const navigate = useNavigate();
+  const chartTheme = getChartTheme(useIsDark());
   const { data: overview, isLoading } = useQuery({
     queryKey: ['team', 'overview'],
     queryFn: getTeamOverview,
@@ -95,20 +97,15 @@ export function TeamDashboardPage() {
           <h3 className="mb-3 text-sm font-semibold text-gray-900 dark:text-white">Repository Scores</h3>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={repoBarData} layout="vertical" margin={{ left: 80 }}>
-              <XAxis type="number" domain={[0, 100]} tick={{ fontSize: 11 }} />
+              <XAxis type="number" domain={[0, 100]} tick={{ fontSize: 11, fill: chartTheme.tickFill }} />
               <YAxis
                 type="category"
                 dataKey="name"
-                tick={{ fontSize: 11 }}
+                tick={{ fontSize: 11, fill: chartTheme.tickFill }}
                 width={80}
               />
               <Tooltip
-                contentStyle={{
-                  backgroundColor: 'var(--tooltip-bg, #fff)',
-                  border: '1px solid #e5e7eb',
-                  borderRadius: 8,
-                  fontSize: 12,
-                }}
+                contentStyle={{ ...chartTheme.tooltipStyle, fontSize: 12 }}
                 formatter={(val: number) => [`${val}/100`, 'Score']}
               />
               <Bar
@@ -144,7 +141,10 @@ export function TeamDashboardPage() {
                   <Cell key={i} fill={entry.fill} />
                 ))}
               </Pie>
-              <Tooltip formatter={(val: number, name: string) => [`${val} repo(s)`, `Grade ${name}`]} />
+              <Tooltip
+                contentStyle={chartTheme.tooltipStyle}
+                formatter={(val: number, name: string) => [`${val} repo(s)`, `Grade ${name}`]}
+              />
             </PieChart>
           </ResponsiveContainer>
           <div className="flex flex-wrap justify-center gap-3 mt-2">
@@ -172,7 +172,7 @@ export function TeamDashboardPage() {
               </div>
               <div className="text-right">
                 <p className="text-2xl font-bold text-green-600 dark:text-green-400">{overview.bestRepo.score}</p>
-                <p className="text-xs text-gray-500">Grade {overview.bestRepo.grade}</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">Grade {overview.bestRepo.grade}</p>
               </div>
             </div>
           </div>
@@ -190,7 +190,7 @@ export function TeamDashboardPage() {
               </div>
               <div className="text-right">
                 <p className="text-2xl font-bold text-red-600 dark:text-red-400">{overview.worstRepo.score}</p>
-                <p className="text-xs text-gray-500">Grade {overview.worstRepo.grade}</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">Grade {overview.worstRepo.grade}</p>
               </div>
             </div>
           </div>
@@ -272,15 +272,15 @@ export function TeamDashboardPage() {
                   <td className="px-4 py-2.5">
                     <span className="font-bold" style={{ color: GRADE_COLORS[repo.grade] }}>{repo.grade}</span>
                   </td>
-                  <td className="px-4 py-2.5 text-gray-500">{repo.totalDeps}</td>
+                  <td className="px-4 py-2.5 text-gray-500 dark:text-gray-400">{repo.totalDeps}</td>
                   <td className="px-4 py-2.5">
                     {repo.vulnerableCount > 0 ? (
-                      <span className="text-red-600 font-medium">{repo.vulnerableCount}</span>
+                      <span className="text-red-600 font-medium dark:text-red-400">{repo.vulnerableCount}</span>
                     ) : (
-                      <span className="text-green-600">0</span>
+                      <span className="text-green-600 dark:text-green-400">0</span>
                     )}
                   </td>
-                  <td className="px-4 py-2.5 text-gray-500">{repo.language || '—'}</td>
+                  <td className="px-4 py-2.5 text-gray-500 dark:text-gray-400">{repo.language || '—'}</td>
                   <td className="px-4 py-2.5 text-gray-400 text-xs">
                     {repo.lastScannedAt ? new Date(repo.lastScannedAt).toLocaleDateString() : 'Never'}
                   </td>

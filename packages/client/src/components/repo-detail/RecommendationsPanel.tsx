@@ -32,7 +32,7 @@ function CopyButton({ text }: { text: string }) {
   return (
     <button
       onClick={handleCopy}
-      className="ml-auto flex-shrink-0 rounded p-1 text-gray-400 hover:bg-gray-200 hover:text-gray-600 transition-colors"
+      className="ml-auto flex-shrink-0 rounded p-1 text-gray-400 hover:bg-gray-200 hover:text-gray-600 transition-colors dark:hover:bg-gray-700 dark:hover:text-gray-300"
       title="Copy command"
     >
       {copied ? <Check className="h-3.5 w-3.5 text-green-500" /> : <Copy className="h-3.5 w-3.5" />}
@@ -76,16 +76,16 @@ function FixStep({ step, index }: { step: string; index: number }) {
     const textBefore = step.substring(0, step.indexOf(url));
     return (
       <li className="flex items-start gap-3">
-        <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-blue-100 text-[10px] font-bold text-blue-700 mt-0.5">
+        <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-blue-100 text-[10px] font-bold text-blue-700 mt-0.5 dark:bg-blue-900/40 dark:text-blue-300">
           {index + 1}
         </span>
-        <div className="flex-1 text-sm text-gray-700">
+        <div className="flex-1 text-sm text-gray-700 dark:text-gray-300">
           {textBefore}
           <a
             href={url}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 font-medium text-blue-600 hover:text-blue-700 underline"
+            className="inline-flex items-center gap-1 font-medium text-blue-600 hover:text-blue-700 underline dark:text-blue-400 dark:hover:text-blue-300"
           >
             {url.length > 60 ? url.substring(0, 57) + '...' : url}
             <ExternalLink className="h-3 w-3" />
@@ -102,13 +102,13 @@ function FixStep({ step, index }: { step: string; index: number }) {
       <li className="flex items-start gap-3">
         <span className={clsx(
           'flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full text-[10px] font-bold mt-0.5',
-          isWarning ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700',
+          isWarning ? 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300' : 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300',
         )}>
           !
         </span>
         <p className={clsx(
           'text-sm italic',
-          isWarning ? 'text-red-600 font-medium' : 'text-amber-700',
+          isWarning ? 'text-red-600 font-medium dark:text-red-400' : 'text-amber-700 dark:text-amber-400',
         )}>
           {step}
         </p>
@@ -118,10 +118,10 @@ function FixStep({ step, index }: { step: string; index: number }) {
 
   return (
     <li className="flex items-start gap-3">
-      <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-gray-100 text-[10px] font-bold text-gray-600 mt-0.5">
+      <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-gray-100 text-[10px] font-bold text-gray-600 mt-0.5 dark:bg-gray-700 dark:text-gray-300">
         {index + 1}
       </span>
-      <p className="text-sm text-gray-700">{step}</p>
+      <p className="text-sm text-gray-700 dark:text-gray-300">{step}</p>
     </li>
   );
 }
@@ -133,16 +133,16 @@ function RecommendationCard({ rec }: { rec: IRecommendation }) {
   const hasSteps = fixSteps.length > 0;
 
   return (
-    <div className="rounded-lg border bg-white shadow-sm overflow-hidden">
+    <div className="rounded-lg border border-gray-200 bg-white shadow-sm overflow-hidden dark:border-gray-700 dark:bg-gray-800">
       {/* Main card content */}
       <div className="p-4">
         <div className="flex items-start gap-4">
           <div
             className={clsx(
               'flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl',
-              rec.type === 'upgrade' && 'bg-blue-50 text-blue-600',
-              rec.type === 'replace' && 'bg-purple-50 text-purple-600',
-              rec.type === 'remove' && 'bg-red-50 text-red-600',
+              rec.type === 'upgrade' && 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400',
+              rec.type === 'replace' && 'bg-purple-50 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400',
+              rec.type === 'remove' && 'bg-red-50 text-red-600 dark:bg-red-900/30 dark:text-red-400',
             )}
           >
             <Icon className="h-5 w-5" />
@@ -154,46 +154,46 @@ function RecommendationCard({ rec }: { rec: IRecommendation }) {
               </span>
               <span className={clsx(
                 'inline-flex items-center rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide',
-                rec.type === 'upgrade' && 'bg-blue-50 text-blue-600',
-                rec.type === 'replace' && 'bg-purple-50 text-purple-600',
-                rec.type === 'remove' && 'bg-red-50 text-red-600',
+                rec.type === 'upgrade' && 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400',
+                rec.type === 'replace' && 'bg-purple-50 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400',
+                rec.type === 'remove' && 'bg-red-50 text-red-600 dark:bg-red-900/30 dark:text-red-400',
               )}>
                 {typeLabels[rec.type]}
               </span>
-              <h4 className="text-sm font-semibold text-gray-900">{rec.title}</h4>
+              <h4 className="text-sm font-semibold text-gray-900 dark:text-white">{rec.title}</h4>
             </div>
-            <p className="mt-1 text-sm text-gray-600">{rec.description}</p>
+            <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">{rec.description}</p>
 
             {/* Meta row */}
             <div className="mt-2 flex flex-wrap items-center gap-4 text-xs">
               {rec.packageName && (
-                <span className="text-gray-500">
-                  Package: <span className="font-medium text-gray-700">{rec.packageName}</span>
+                <span className="text-gray-500 dark:text-gray-400">
+                  Package: <span className="font-medium text-gray-700 dark:text-gray-300">{rec.packageName}</span>
                 </span>
               )}
               {rec.ecosystem && (
-                <span className="text-gray-500">
-                  Ecosystem: <span className="font-medium text-gray-700">{rec.ecosystem}</span>
+                <span className="text-gray-500 dark:text-gray-400">
+                  Ecosystem: <span className="font-medium text-gray-700 dark:text-gray-300">{rec.ecosystem}</span>
                 </span>
               )}
               {rec.currentVersion && rec.suggestedVersion && (
-                <span className="text-gray-500">
-                  {rec.currentVersion} → <span className="font-semibold text-green-600">{rec.suggestedVersion}</span>
+                <span className="text-gray-500 dark:text-gray-400">
+                  {rec.currentVersion} → <span className="font-semibold text-green-600 dark:text-green-400">{rec.suggestedVersion}</span>
                 </span>
               )}
               {rec.alternativePackage && (
-                <span className="text-gray-500">
-                  Alternative: <span className="font-medium text-green-600">{rec.alternativePackage}</span>
+                <span className="text-gray-500 dark:text-gray-400">
+                  Alternative: <span className="font-medium text-green-600 dark:text-green-400">{rec.alternativePackage}</span>
                 </span>
               )}
               {rec.currentScore != null && (
-                <span className="text-gray-500">
+                <span className="text-gray-500 dark:text-gray-400">
                   Score: <span className="font-medium">{rec.currentScore}/100</span>
                   {rec.grade && <span className="ml-1">({rec.grade})</span>}
                 </span>
               )}
               {rec.scoreImpact > 0 && (
-                <span className="font-semibold text-green-600">
+                <span className="font-semibold text-green-600 dark:text-green-400">
                   +{rec.scoreImpact} points potential
                 </span>
               )}
@@ -202,7 +202,7 @@ function RecommendationCard({ rec }: { rec: IRecommendation }) {
                   href={rec.migrationUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 font-medium text-blue-600 hover:text-blue-700"
+                  className="inline-flex items-center gap-1 font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
                 >
                   Migration Guide <ExternalLink className="h-3 w-3" />
                 </a>
@@ -218,10 +218,10 @@ function RecommendationCard({ rec }: { rec: IRecommendation }) {
           <button
             onClick={() => setExpanded(!expanded)}
             className={clsx(
-              'flex w-full items-center gap-2 border-t px-4 py-2.5 text-left text-sm font-medium transition-colors',
+              'flex w-full items-center gap-2 border-t border-gray-200 px-4 py-2.5 text-left text-sm font-medium transition-colors dark:border-gray-700',
               expanded
-                ? 'bg-gray-50 text-gray-900'
-                : 'bg-gray-50/50 text-gray-600 hover:bg-gray-50 hover:text-gray-900',
+                ? 'bg-gray-50 text-gray-900 dark:bg-gray-900/50 dark:text-gray-100'
+                : 'bg-gray-50/50 text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:bg-gray-900/30 dark:text-gray-400 dark:hover:bg-gray-900/50 dark:hover:text-gray-200',
             )}
           >
             {expanded ? (
@@ -232,7 +232,7 @@ function RecommendationCard({ rec }: { rec: IRecommendation }) {
             How to fix — {fixSteps.length} step{fixSteps.length > 1 ? 's' : ''}
           </button>
           {expanded && (
-            <div className="border-t bg-gray-50/30 px-4 py-4">
+            <div className="border-t border-gray-200 bg-gray-50/30 px-4 py-4 dark:border-gray-700 dark:bg-gray-900/30">
               <ol className="space-y-3">
                 {fixSteps.map((step, i) => (
                   <FixStep key={i} step={step} index={i} />
@@ -283,10 +283,10 @@ export function RecommendationsPanel({ recommendations }: RecommendationsPanelPr
       <div className={clsx(
         'flex items-center gap-3 rounded-lg border p-4',
         criticalCount > 0
-          ? 'border-red-200 bg-red-50'
+          ? 'border-red-200 bg-red-50 dark:border-red-800 dark:bg-red-900/20'
           : highCount > 0
-            ? 'border-orange-200 bg-orange-50'
-            : 'border-blue-200 bg-blue-50',
+            ? 'border-orange-200 bg-orange-50 dark:border-orange-800 dark:bg-orange-900/20'
+            : 'border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-900/20',
       )}>
         <Lightbulb className={clsx(
           'h-5 w-5 flex-shrink-0',
@@ -295,13 +295,13 @@ export function RecommendationsPanel({ recommendations }: RecommendationsPanelPr
         <div>
           <p className={clsx(
             'text-sm font-medium',
-            criticalCount > 0 ? 'text-red-800' : highCount > 0 ? 'text-orange-800' : 'text-blue-800',
+            criticalCount > 0 ? 'text-red-800 dark:text-red-300' : highCount > 0 ? 'text-orange-800 dark:text-orange-300' : 'text-blue-800 dark:text-blue-300',
           )}>
             {recommendations.length} recommendation{recommendations.length !== 1 ? 's' : ''} to improve your stack health
           </p>
           <p className={clsx(
             'text-xs mt-0.5',
-            criticalCount > 0 ? 'text-red-600' : highCount > 0 ? 'text-orange-600' : 'text-blue-600',
+            criticalCount > 0 ? 'text-red-600 dark:text-red-400' : highCount > 0 ? 'text-orange-600 dark:text-orange-400' : 'text-blue-600 dark:text-blue-400',
           )}>
             {criticalCount > 0 && `${criticalCount} critical`}
             {criticalCount > 0 && highCount > 0 && ', '}
@@ -332,8 +332,8 @@ export function RecommendationsPanel({ recommendations }: RecommendationsPanelPr
                     : p === 'high' ? 'bg-orange-500 text-white'
                     : p === 'medium' ? 'bg-yellow-500 text-white'
                     : 'bg-blue-500 text-white'
-                  : 'bg-gray-900 text-white'
-                : 'bg-gray-100 text-gray-500 hover:bg-gray-200',
+                  : 'bg-gray-900 text-white dark:bg-white dark:text-gray-900'
+                : 'bg-gray-100 text-gray-500 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700',
               )}
             >
               {p ? `${p.charAt(0).toUpperCase() + p.slice(1)} (${count})` : `All (${count})`}

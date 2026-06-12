@@ -18,7 +18,7 @@ export function TrendSparkline({ repoId, data: providedData, width = 80, height 
   }));
 
   if (chartData.length < 2) {
-    return <div style={{ width, height }} className="flex items-center justify-center text-xs text-gray-300">--</div>;
+    return <div style={{ width, height }} className="flex items-center justify-center text-xs text-gray-300 dark:text-gray-600">--</div>;
   }
 
   const latestScore = chartData[chartData.length - 1]?.score ?? 50;

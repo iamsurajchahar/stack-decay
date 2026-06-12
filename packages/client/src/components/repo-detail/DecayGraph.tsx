@@ -12,6 +12,7 @@ import {
 import { useScoreHistory } from '../../hooks/useScores';
 import { formatAxisDate, getLineColor, getDimensionLabel } from '../../utils/chartHelpers';
 import { LoadingSpinner } from '../shared/LoadingSpinner';
+import { useIsDark, getChartTheme } from '../../hooks/useIsDark';
 import { clsx } from 'clsx';
 
 interface DecayGraphProps {
@@ -35,6 +36,7 @@ const timeRanges = [
 ];
 
 export function DecayGraph({ repoId }: DecayGraphProps) {
+  const chartTheme = getChartTheme(useIsDark());
   const [selectedRange, setSelectedRange] = useState('90d');
   const [visibleDimensions, setVisibleDimensions] = useState<Set<string>>(
     new Set(['compositeScore']),
@@ -63,8 +65,8 @@ export function DecayGraph({ repoId }: DecayGraphProps) {
   return (
     <div className="card">
       <div className="mb-4 flex flex-wrap items-center justify-between gap-4">
-        <h3 className="text-base font-semibold text-gray-900">Score Over Time</h3>
-        <div className="flex gap-1 rounded-lg bg-gray-100 p-1">
+        <h3 className="text-base font-semibold text-gray-900 dark:text-white">Score Over Time</h3>
+        <div className="flex gap-1 rounded-lg bg-gray-100 p-1 dark:bg-gray-700">
           {timeRanges.map((r) => (
             <button
               key={r.label}
@@ -72,8 +74,8 @@ export function DecayGraph({ repoId }: DecayGraphProps) {
               className={clsx(
                 'rounded-md px-3 py-1 text-xs font-medium transition-colors',
                 selectedRange === r.label
-                  ? 'bg-white text-gray-900 shadow-sm'
-                  : 'text-gray-500 hover:text-gray-700',
+                  ? 'bg-white text-gray-900 shadow-sm dark:bg-gray-800 dark:text-white'
+                  : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200',
               )}
             >
               {r.label}
@@ -92,7 +94,7 @@ export function DecayGraph({ repoId }: DecayGraphProps) {
               'flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium transition-all',
               visibleDimensions.has(dim)
                 ? 'border-transparent text-white'
-                : 'border-gray-200 bg-white text-gray-500 hover:border-gray-300',
+                : 'border-gray-200 bg-white text-gray-500 hover:border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:border-gray-500',
             )}
             style={
               visibleDimensions.has(dim)
@@ -113,19 +115,15 @@ export function DecayGraph({ repoId }: DecayGraphProps) {
         <div className="h-72">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={history || []} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+              <CartesianGrid strokeDasharray="3 3" stroke={chartTheme.gridStroke} />
               <XAxis
                 dataKey="snapshotDate"
                 tickFormatter={formatAxisDate}
-                tick={{ fontSize: 12, fill: '#6b7280' }}
+                tick={{ fontSize: 12, fill: chartTheme.tickFill }}
               />
-              <YAxis domain={[0, 100]} tick={{ fontSize: 12, fill: '#6b7280' }} />
+              <YAxis domain={[0, 100]} tick={{ fontSize: 12, fill: chartTheme.tickFill }} />
               <Tooltip
-                contentStyle={{
-                  borderRadius: '0.5rem',
-                  border: '1px solid #e5e7eb',
-                  fontSize: '0.875rem',
-                }}
+                contentStyle={chartTheme.tooltipStyle}
                 labelFormatter={formatAxisDate}
                 formatter={(value: number, name: string) => [
                   Math.round(value),

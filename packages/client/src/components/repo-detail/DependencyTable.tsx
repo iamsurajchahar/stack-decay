@@ -107,12 +107,12 @@ export function DependencyTable({ repoId }: DependencyTableProps) {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-gray-200 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                <tr className="border-b border-gray-200 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:border-gray-700 dark:text-gray-400">
                   {columns.map((col) => (
                     <th
                       key={col.key}
                       className={clsx(
-                        'cursor-pointer whitespace-nowrap px-4 py-3 hover:text-gray-700',
+                        'cursor-pointer whitespace-nowrap px-4 py-3 hover:text-gray-700 dark:hover:text-gray-200',
                         col.align === 'center' && 'text-center',
                       )}
                       onClick={() => handleSort(col.key)}
@@ -126,21 +126,21 @@ export function DependencyTable({ repoId }: DependencyTableProps) {
                   <th className="px-4 py-3 text-center">Grade</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100">
+              <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
                 {data.items.map((dep) => (
                   <tr
                     key={dep.id}
                     onClick={() => navigate(`/repos/${repoId}/deps/${dep.packageId}`)}
-                    className="cursor-pointer transition-colors hover:bg-gray-50"
+                    className="cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-700/50"
                   >
                     <td className="px-4 py-3">
                       <div>
-                        <p className="font-medium text-gray-900">{dep.name}</p>
-                        <p className="text-xs text-gray-500">{dep.version}</p>
+                        <p className="font-medium text-gray-900 dark:text-white">{dep.name}</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">{dep.version}</p>
                       </div>
                     </td>
                     <td className="px-4 py-3">
-                      <span className="badge bg-gray-100 text-gray-600">{dep.ecosystem}</span>
+                      <span className="badge bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300">{dep.ecosystem}</span>
                     </td>
                     <td className={clsx('px-4 py-3 text-center font-semibold', getScoreColor(dep.compositeScore))}>
                       {Math.round(dep.compositeScore)}
@@ -167,8 +167,8 @@ export function DependencyTable({ repoId }: DependencyTableProps) {
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="mt-4 flex items-center justify-between border-t border-gray-100 pt-4">
-              <p className="text-sm text-gray-500">
+            <div className="mt-4 flex items-center justify-between border-t border-gray-100 pt-4 dark:border-gray-700">
+              <p className="text-sm text-gray-500 dark:text-gray-400">
                 Showing {(page - 1) * limit + 1}--{Math.min(page * limit, data.total)} of{' '}
                 {data.total}
               </p>
@@ -176,14 +176,14 @@ export function DependencyTable({ repoId }: DependencyTableProps) {
                 <button
                   onClick={() => setPage(Math.max(1, page - 1))}
                   disabled={page === 1}
-                  className="rounded-lg border border-gray-300 p-2 text-gray-500 hover:bg-gray-50 disabled:opacity-30"
+                  className="rounded-lg border border-gray-300 p-2 text-gray-500 hover:bg-gray-50 disabled:opacity-30 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-700"
                 >
                   <ChevronLeft className="h-4 w-4" />
                 </button>
                 <button
                   onClick={() => setPage(Math.min(totalPages, page + 1))}
                   disabled={page === totalPages}
-                  className="rounded-lg border border-gray-300 p-2 text-gray-500 hover:bg-gray-50 disabled:opacity-30"
+                  className="rounded-lg border border-gray-300 p-2 text-gray-500 hover:bg-gray-50 disabled:opacity-30 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-700"
                 >
                   <ChevronRight className="h-4 w-4" />
                 </button>

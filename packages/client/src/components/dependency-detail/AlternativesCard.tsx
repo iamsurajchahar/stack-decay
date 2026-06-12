@@ -52,9 +52,9 @@ export function AlternativesCard({ packageName, ecosystem }: Props) {
   return (
     <div className="space-y-4">
       <div>
-        <h3 className="text-md font-medium text-gray-700">Recommended Alternatives</h3>
-        <p className="text-sm text-gray-500 mt-1">
-          Consider migrating from <code className="bg-gray-100 px-1 rounded">{packageName}</code> to one of these actively maintained packages:
+        <h3 className="text-md font-medium text-gray-700 dark:text-gray-300">Recommended Alternatives</h3>
+        <p className="text-sm text-gray-500 mt-1 dark:text-gray-400">
+          Consider migrating from <code className="bg-gray-100 px-1 rounded dark:bg-gray-700">{packageName}</code> to one of these actively maintained packages:
         </p>
       </div>
 
@@ -62,23 +62,23 @@ export function AlternativesCard({ packageName, ecosystem }: Props) {
         {alternatives.map((alt) => (
           <div
             key={alt.name}
-            className="border rounded-lg p-4 hover:border-indigo-300 hover:shadow-sm transition-all"
+            className="border border-gray-200 rounded-lg p-4 hover:border-indigo-300 hover:shadow-sm transition-all dark:border-gray-700 dark:hover:border-indigo-700"
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center">
-                  <ArrowRight className="w-4 h-4 text-emerald-600" />
+                <div className="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center dark:bg-emerald-900/40">
+                  <ArrowRight className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                 </div>
                 <div>
-                  <h4 className="font-medium text-gray-900">{alt.name}</h4>
-                  <p className="text-sm text-gray-500">{alt.reason}</p>
+                  <h4 className="font-medium text-gray-900 dark:text-white">{alt.name}</h4>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">{alt.reason}</p>
                 </div>
               </div>
               <a
                 href={`https://www.npmjs.com/package/${alt.name}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1 text-xs text-indigo-600 hover:text-indigo-800"
+                className="flex items-center gap-1 text-xs text-indigo-600 hover:text-indigo-800 dark:text-indigo-400 dark:hover:text-indigo-300"
               >
                 View <ExternalLink className="w-3 h-3" />
               </a>
@@ -87,7 +87,7 @@ export function AlternativesCard({ packageName, ecosystem }: Props) {
         ))}
       </div>
 
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-sm text-blue-700">
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-sm text-blue-700 dark:bg-blue-900/20 dark:border-blue-800 dark:text-blue-300">
         <strong>Migration tip:</strong> Check the package's README for migration guides. Most popular packages provide codemods or step-by-step upgrade paths.
       </div>
     </div>

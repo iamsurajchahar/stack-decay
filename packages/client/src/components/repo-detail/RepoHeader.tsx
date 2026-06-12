@@ -19,25 +19,25 @@ export function RepoHeader({ repo, score }: RepoHeaderProps) {
       <ScoreGauge score={score?.compositeScore ?? null} grade={score?.grade ?? null} size={96} />
       <div className="flex-1">
         <div className="flex items-center gap-2">
-          <h2 className="text-xl font-bold text-gray-900">{repo.fullName}</h2>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white">{repo.fullName}</h2>
           <a
             href={`https://github.com/${repo.fullName}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-gray-400 hover:text-gray-600"
+            className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
           >
             <ExternalLink className="h-4 w-4" />
           </a>
         </div>
-        <div className="mt-1 flex flex-wrap items-center gap-2 text-sm text-gray-500">
+        <div className="mt-1 flex flex-wrap items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
           <span>Scanned {formatRelative(repo.lastScannedAt)}</span>
-          <span className="text-gray-300">|</span>
-          <span className="badge bg-gray-100 text-gray-600">{repo.scanFrequency}</span>
-          {repo.language && <span className="badge bg-blue-50 text-blue-700">{repo.language}</span>}
-          {repo.isPrivate && <span className="badge bg-yellow-50 text-yellow-700">Private</span>}
+          <span className="text-gray-300 dark:text-gray-600">|</span>
+          <span className="badge bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300">{repo.scanFrequency}</span>
+          {repo.language && <span className="badge bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">{repo.language}</span>}
+          {repo.isPrivate && <span className="badge bg-yellow-50 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300">Private</span>}
         </div>
         {score && (
-          <div className="mt-2 flex gap-4 text-xs text-gray-500">
+          <div className="mt-2 flex gap-4 text-xs text-gray-500 dark:text-gray-400">
             <span>{score.totalDependencies} dependencies</span>
             <span>{score.vulnerableCount} vulnerable</span>
             <span>{score.deprecatedCount} deprecated</span>

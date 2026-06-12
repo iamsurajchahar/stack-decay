@@ -11,12 +11,14 @@ import {
 } from 'recharts';
 import type { TrendData } from '../../api/dashboard';
 import { formatAxisDate } from '../../utils/chartHelpers';
+import { useIsDark, getChartTheme } from '../../hooks/useIsDark';
 
 interface CrossRepoTrendChartProps {
   data: TrendData[];
 }
 
 export function CrossRepoTrendChart({ data }: CrossRepoTrendChartProps) {
+  const chartTheme = getChartTheme(useIsDark());
   // Flatten per-repo snapshots into date-keyed rows with an average score
   const chartData = useMemo(() => {
     const byDate = new Map<string, number[]>();
@@ -39,23 +41,19 @@ export function CrossRepoTrendChart({ data }: CrossRepoTrendChartProps) {
 
   return (
     <div className="card">
-      <h3 className="mb-4 text-base font-semibold text-gray-900">Score Trend (All Repos)</h3>
+      <h3 className="mb-4 text-base font-semibold text-gray-900 dark:text-white">Score Trend (All Repos)</h3>
       <div className="h-64">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={chartData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+            <CartesianGrid strokeDasharray="3 3" stroke={chartTheme.gridStroke} />
             <XAxis
               dataKey="date"
               tickFormatter={formatAxisDate}
-              tick={{ fontSize: 12, fill: '#6b7280' }}
+              tick={{ fontSize: 12, fill: chartTheme.tickFill }}
             />
-            <YAxis domain={[0, 100]} tick={{ fontSize: 12, fill: '#6b7280' }} />
+            <YAxis domain={[0, 100]} tick={{ fontSize: 12, fill: chartTheme.tickFill }} />
             <Tooltip
-              contentStyle={{
-                borderRadius: '0.5rem',
-                border: '1px solid #e5e7eb',
-                fontSize: '0.875rem',
-              }}
+              contentStyle={chartTheme.tooltipStyle}
               formatter={(value: number) => [Math.round(value), 'Avg Score']}
               labelFormatter={formatAxisDate}
             />
